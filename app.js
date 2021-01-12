@@ -261,8 +261,12 @@ class UI {
         });
     }
     clearCart() {
-        console.log(this);
+        // lấy ra all id sản phẩm trong giỏ hàng or cart
         let cartItems = cart.map(item => item.id);
+        console.log("test 11: ");
+        console.log(cartItems);
+        // VD giỏ hàng có 3 sp tương tự với 3 id
+        // đầu tiên là id của sp thứ nhất
         cartItems.forEach(id => this.removeItem(id))
         console.log(cartContent.children);
         while (cartContent.children.length > 0) {
@@ -271,16 +275,42 @@ class UI {
         this.hideCart();
     }
     removeItem(id) {
-        cart = cart.filter(item => item.id !== id);
+        console.log("test 12: ");
+        console.log(id);
+        console.log("test 13: ");
+        console.log(cart);
+        // so sánh 3 id trong giỏ hàng id nào khác với id của
+        // sp thứ nhất thì lấy
+        cart = cart.filter(item => {
+            console.log("test 14: ");
+            console.log(item);
+            console.log("test 15: ");
+            console.log(item.id !== id);
+            return item.id !== id;
+        });
+        // 16 lúc này chứa object của 2 thằng cuối (VD 3 sp)
+        console.log("test 16: ");
+        console.log(cart);
+        // cập nhật hiển thị lại giá total và giá giỏ hàng mỗi lần
+        // sau khi xóa 1 sản phẩm cả UI và cả storage
         this.setCartValues(cart);
         Storage.saveCart(cart);
+
+
+        // phần dưới đây là dùng để enable lại sp đã disable khi user
+        // click thêm sp giỏ hàng sau khi xóa
+        // button chứa object của sản phẩm đầu tiên
         let button = this.getSingleButton(id);
+        // enable lại cái button thêm vào giỏ hàng của sản phẩm đầu tiên
         button.disabled = false;
-        button.innerHTML = `
-            <i class="fas fa-shopping-cart"></i>add to cart
-        `;
+        // button.innerHTML = `
+        //     <i class="fas fa-shopping-cart"></i>add to cart
+        // `;
+        button.innerText = "add to cart";
     }
     getSingleButton(id) {
+        console.log("test 17: ");
+        console.log(buttonsDOM);
         return buttonsDOM.find(button => button.dataset.id === id);
     }
 }
