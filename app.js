@@ -178,7 +178,7 @@ class UI {
         cartTotal.innerText = parseFloat(tempTotal.toFixed(2));
         cartItems.innerText = itemsTotal;
     }
-    addCartItem1(item) {
+    addCartItem(item) {
         const div = document.createElement('div');
         div.classList.add('cart-item');
         div.innerHTML = `
