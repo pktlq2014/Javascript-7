@@ -16,6 +16,7 @@ const cartTotal = document.querySelector(".cart-total");
 const cartContent = document.querySelector(".cart-content");
 // bảo thẻ div mỗi sản phẩm hiển thị bên ngoài
 const productsDOM = document.querySelector(".products-center");
+const item_amount = document.querySelector(".item-amount");
 let cart = [];
 let buttonsDOM = [];
 class Products {
@@ -252,18 +253,27 @@ class UI {
             else if (event.target.classList.contains("fa-chevron-up")) {
                 let addAmount = event.target;
                 let id = addAmount.dataset.id;
-                console.log(addAmount);
+                // tempItem tham chiếu tới cart nên khi tempItem
+                // thay đổi thì cart thay đổi theo
                 let tempItem = cart.find(item => item.id === id);
-                tempItem.amount = tempItem.amount + 1;
+                tempItem.amount += 1;
+                console.log("test 23: ");
+                console.log(tempItem);
                 Storage.saveCart(cart);
                 this.setCartValues(cart);
+                // addAmount là thẻ i
+                // nextElementSibling là lấy nội dung thẻ bên dưới nó
+                // là thẻ p, sau đó gán lại số lượng nội dung của thẻ p
+                console.log("test 24: ");
+                console.log(addAmount.nextElementSibling);
                 addAmount.nextElementSibling.innerText = tempItem.amount;
             }
             else if (event.target.classList.contains("fa-chevron-down")) {
                 let lowerAmount = event.target;
                 let id = lowerAmount.dataset.id;
                 let tempItem = cart.find(item => item.id === id);
-                tempItem.amount = tempItem.amount - 1;
+                tempItem.amount -= 1;
+                // nếu trong giỏ hàng còn sp
                 if (tempItem.amount > 0) {
                     Storage.saveCart(cart);
                     this.setCartValues(cart);
@@ -273,9 +283,6 @@ class UI {
                     cartContent.removeChild(lowerAmount.parentElement.parentElement);
                     this.removeItem(id);
                 }
-            }
-            else {
-
             }
         });
     }
