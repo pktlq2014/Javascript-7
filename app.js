@@ -16,10 +16,8 @@ const cartTotal = document.querySelector(".cart-total");
 const cartContent = document.querySelector(".cart-content");
 // bảo thẻ div mỗi sản phẩm hiển thị bên ngoài
 const productsDOM = document.querySelector(".products-center");
-
 let cart = [];
 let buttonsDOM = [];
-
 class Products {
     // lấy thông tin all object mỗi sản phẩm từ array
     async getProducts() {
@@ -81,8 +79,8 @@ class UI {
         console.log("test 5: ");
         console.log(buttons);
         // buttonsDOM là 1 array rỗng
-        // gán array chứa các class của các button này vào array rỗng
         buttonsDOM = buttons;
+        // gán array chứa các class của các button này vào array rỗng
         buttons.forEach(button => {
             // lấy ra dataset-id của 8 cái button 
             let id = button.dataset.id;
@@ -203,6 +201,9 @@ class UI {
     showCart() {
         cartOverlay.classList.add('transparentBcg');
         cartDOM.classList.add('showCart');
+        if(cart.length === 0) {
+            alert("Your shopping cart is empty!!!");
+        }
     }
     setupAPP() {
         cart = Storage.getCart();
@@ -223,13 +224,28 @@ class UI {
         clearCartBtn.addEventListener("click", () => {
             this.clearCart();
         });
+
+
+
         // cart functionality
+        // bao thẻ div mỗi sp trong giỏ hàng
+        // là thằng cha 
         cartContent.addEventListener("click", event => {
+            console.log("test 21: ");
             console.log(event.target);
+            // click vào những class con nào nằm trong thằng
+            // cha mà class đó là: remove-item
             if (event.target.classList.contains("remove-item")) {
+                // lấy được removeItem là thẻ span 
+                // span là thẻ bao class remove-item
                 let removeItem = event.target;
+                console.log("test 22: ");
                 console.log(removeItem);
+                // lấy ra data-id của thẻ span là sp user vừa
+                // click xóa
+                // data-id = id 2 cái đều là 1
                 let id = removeItem.dataset.id;
+                // cha của span > item-list > cart-item
                 cartContent.removeChild(removeItem.parentElement.parentElement);
                 this.removeItem(id);
             }
@@ -258,38 +274,76 @@ class UI {
                     this.removeItem(id);
                 }
             }
+            else {
+
+            }
         });
     }
     clearCart() {
-        // lấy ra all id sản phẩm trong giỏ hàng or cart
-        let cartItems = cart.map(item => item.id);
-        console.log("test 11: ");
-        console.log(cartItems);
-        // VD giỏ hàng có 3 sp tương tự với 3 id
-        // đầu tiên là id của sp thứ nhất
-        cartItems.forEach(id => this.removeItem(id))
-        console.log(cartContent.children);
-        while (cartContent.children.length > 0) {
-            cartContent.removeChild(cartContent.children[0]);
+        // // lấy ra all id sản phẩm trong giỏ hàng or cart
+        // let cartItems = cart.map(item => item.id);
+        // console.log("test 11: ");
+        // console.log(cartItems);
+        // // VD giỏ hàng có 3 sp tương tự với 3 id
+        // // đầu tiên là id của sp thứ nhất
+        // cartItems.forEach(id => this.removeItem(id))
+
+
+
+        cart = [];
+        this.setCartValues(cart);
+        Storage.saveCart(cart);
+        // cho all 8 button về trạng thái ban đầu
+        buttonsDOM.forEach(button => {
+            button.disabled = false;
+            button.innerText = "add to cart";
+            //button.innerHTML = `<i class="fas fa-shopping-cart"></i>add to bag`;
+        });
+
+
+
+        console.log("test 19: ");
+        // bao nhiêu sp trong giỏ hàng
+        // thì sẽ có bao nhiêu thằng div trong đây
+        console.log(cartContent.hasChildNodes());
+        // nếu trong cartContent có bao nhiêu sp
+        // thì sẽ có bấy nhiêu thằng div
+        // hasChild nghĩa là nếu trong cartContent có div
+        // nghĩa là có thằng con trong đó
+        // thì sẽ trả về true, ngược lại là false
+        // có con, tức là trong giỏ hàng có sp
+        while (cartContent.hasChildNodes() === true) {
+            console.log("test 20: ");
+            console.log(cartContent.firstChild);
+            // xóa hết all thẻ div
+            // or all sp hay all thằng con nằm trong thằng
+            // cha cartContent
+            cartContent.removeChild(cartContent.firstChild);
         }
         this.hideCart();
     }
     removeItem(id) {
-        console.log("test 12: ");
+        console.log("test 14: ");
         console.log(id);
-        console.log("test 13: ");
+        console.log("test 15: ");
         console.log(cart);
         // so sánh 3 id trong giỏ hàng id nào khác với id của
         // sp thứ nhất thì lấy
+        // VD: 3 sp thì sẽ có 1 thằng trùng và 2 thằng khác id
+        // lấy 2 thằng khác ra vì nó return true và
+        // bỏ thằng trùng đi
         cart = cart.filter(item => {
-            console.log("test 14: ");
+            console.log("test 16: ");
             console.log(item);
-            console.log("test 15: ");
+            console.log("test 17: ");
             console.log(item.id !== id);
             return item.id !== id;
         });
+        if(cart.length === 0) {
+            this.hideCart();
+        }
         // 16 lúc này chứa object của 2 thằng cuối (VD 3 sp)
-        console.log("test 16: ");
+        console.log("test 18: ");
         console.log(cart);
         // cập nhật hiển thị lại giá total và giá giỏ hàng mỗi lần
         // sau khi xóa 1 sản phẩm cả UI và cả storage
