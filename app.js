@@ -104,57 +104,55 @@ class UI {
                 button.disabled = true;
             }
             // các sản phẩm chưa được thêm vào giỏ hàng
-            else {
-                // khi người dùng click vào 1 sản phẩm
-                // thì đã lấy được 1 id dataset rồi
-                button.addEventListener("click", event => {
-                    event.target.innerText = "In Cart";
-                    // khi users click vào sản phẩm này 
-                    // nghĩa là sản phẩm này sẽ được thêm vào trong giỏ hàng
-                    // thì sau đó user sẽ không thể thêm sp này vào 
-                    // giỏ hàng được nữa, vì vậy phải vô hiệu
-                    // hóa cái button của sản phẩm này sau khi 
-                    // thêm vào giỏ hàng xong
-                    event.target.disabled = true;
+            // khi người dùng click vào 1 sản phẩm
+            // thì đã lấy được 1 id dataset rồi
+            button.addEventListener("click", event => {
+                event.target.innerText = "In Cart";
+                // khi users click vào sản phẩm này 
+                // nghĩa là sản phẩm này sẽ được thêm vào trong giỏ hàng
+                // thì sau đó user sẽ không thể thêm sp này vào 
+                // giỏ hàng được nữa, vì vậy phải vô hiệu
+                // hóa cái button của sản phẩm này sau khi 
+                // thêm vào giỏ hàng xong
+                event.target.disabled = true;
 
 
-                    // get product from products
-                    // let cartItem = Storage.getProduct(id);
-                    // mỗi lần người dùng click vào 1 sp
-                    // sẽ lấy ra được 1 object sản phẩm người
-                    // dùng vừa click vào từ 8 object sản phẩm
-                    // trên storage, thêm vào 1 thuộc tính mới
-                    let cartItem = { ...Storage.getProduct(id), amount: 1 };
-                    console.log("test 9: ");
-                    console.log(cartItem);
-                    // add product to the cart
-                    // cart lúc này vẫn đang là rỗng (tính từ giỏ hàng đang là 0)
-                    // đưa cái object sp người dùng vừa click vào array cart
-                    //cart = [...cart, cartItem];
-                    cart.push(cartItem);
-                    console.log("test 10: ");
-                    console.log(cart);
-                    // save cart in local storage
-                    // mỗi lần như vậy sẽ lưu 1 object sp người dùng
-                    // vừa click lên storage
-                    // lưu lên store để khi refresh lại
-                    // lấy dữ liệu giỏ hàng từ store về
-                    // để lưu lại sản phẩm mà người dùng
-                    // đã thêm vào giỏ hàng
-                    Storage.saveCart(cart);
-                    // set cart values
-                    this.setCartValues(cart);
-                    // display cart item
-                    // để vào đây mỗi lần 1 object sp
-                    // mà người dùng vừa thêm vào giỏ hàng 
-                    // mỗi lần người dùng click thêm sp vào
-                    // giỏ hàng, nó sẽ tạo ra 1 thẻ div
-                    // sau đó thêm vào làm con của cart-content
-                    this.addCartItem(cartItem);
-                    // show the cart
-                    // this.showCart();
-                });
-            }
+                // get product from products
+                // let cartItem = Storage.getProduct(id);
+                // mỗi lần người dùng click vào 1 sp
+                // sẽ lấy ra được 1 object sản phẩm người
+                // dùng vừa click vào từ 8 object sản phẩm
+                // trên storage, thêm vào 1 thuộc tính mới
+                let cartItem = { ...Storage.getProduct(id), amount: 1 };
+                console.log("test 9: ");
+                console.log(cartItem);
+                // add product to the cart
+                // cart lúc này vẫn đang là rỗng (tính từ giỏ hàng đang là 0)
+                // đưa cái object sp người dùng vừa click vào array cart
+                //cart = [...cart, cartItem];
+                cart.push(cartItem);
+                console.log("test 10: ");
+                console.log(cart);
+                // save cart in local storage
+                // mỗi lần như vậy sẽ lưu 1 object sp người dùng
+                // vừa click lên storage
+                // lưu lên store để khi refresh lại
+                // lấy dữ liệu giỏ hàng từ store về
+                // để lưu lại sản phẩm mà người dùng
+                // đã thêm vào giỏ hàng
+                Storage.saveCart(cart);
+                // set cart values
+                this.setCartValues(cart);
+                // display cart item
+                // để vào đây mỗi lần 1 object sp
+                // mà người dùng vừa thêm vào giỏ hàng 
+                // mỗi lần người dùng click thêm sp vào
+                // giỏ hàng, nó sẽ tạo ra 1 thẻ div
+                // sau đó thêm vào làm con của cart-content
+                this.addCartItem(cartItem);
+                // show the cart
+                // this.showCart();
+            });
         });
     }
     // item này chứa array các object sản phẩm mà người dùng vừa click
@@ -202,7 +200,7 @@ class UI {
     showCart() {
         cartOverlay.classList.add('transparentBcg');
         cartDOM.classList.add('showCart');
-        if(cart.length === 0) {
+        if (cart.length === 0) {
             alert("Your shopping cart is empty!!!");
         }
     }
@@ -346,7 +344,7 @@ class UI {
             console.log(item.id !== id);
             return item.id !== id;
         });
-        if(cart.length === 0) {
+        if (cart.length === 0) {
             this.hideCart();
         }
         // 16 lúc này chứa object của 2 thằng cuối (VD 3 sp)
